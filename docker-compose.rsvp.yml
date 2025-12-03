@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  mongo-rsvp:
+    image: mongo:7
+    container_name: mongo-rsvp
+    restart: unless-stopped
+    ports:
+      - "27020:27017"
+    volumes:
+      - mongo_rsvp_data:/data/db
+
+  rsvp-backend:
+    build:
+      context: ./rsvp-board-backend
+    container_name: rsvp-backend
+    command: npm run dev
+    environment:
+      - MONGO_URL=mongodb://mongo-rsvp:27017/rsvpBoard
+      - JWT_SECRET=supersecretjwt
+      - CLIENT_URL=http://localhost:5175
+      - PORT=5003
+    ports:
+      - "5003:5003"
+    depends_on:
+      - mongo-rsvp
+    volumes:
+      - ./rsvp-board-backend:/app
+      - /app/node_modules
+
+  rsvp-frontend:
+    build:
+      context: ./rsvp-board-frontend
+    container_name: rsvp-frontend
+    command: npm run dev -- --host 0.0.0.0 --port 5175
+    ports:
+      - "5175:5175"
+    depends_on:
+      - rsvp-backend
+    volumes:
+      - ./rsvp-board-frontend:/app
+      - /app/node_modules
+
+volumes:
+  mongo_rsvp_data:
