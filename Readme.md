@@ -1,10 +1,10 @@
-```md
+
 # 🎉 An Event RSVP Board  
 A simple collaborative event board where hosts can create events, share a join link, and guests can join RSVP without creating an account.  
 Guests see live updates to the RSVP list and a real-time chat powered by Socket.io.
 
 This app is perfect for showcasing real-time features, shareable links, multi-role interaction, and a clean Express + React architecture.
-```
+
 ---
 
 ## 🚀 Features
